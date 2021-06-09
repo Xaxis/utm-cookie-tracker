@@ -13,7 +13,7 @@
         cookieNameFirstTouchPrefix: "__ft_",
         cookieNamePrefix: "__lt_",
         utmParams: ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"],
-        cookieExpiryDays: 180,
+        cookieExpiryDays: 30,
         isFirstTouch: null
     }
 
@@ -151,7 +151,7 @@
         },
 
         /**
-         * Tests whether or not a UTM value is present.
+         * Tests whether UTM values are present in the URL.
          * @returns {boolean}
          */
         utmPresentInUrl: function () {
@@ -193,6 +193,19 @@
         },
 
         /**
+         * Tests whether there is a refering page or not.
+         */
+        isReferrer: function() {
+            var value = document.referrer;
+            var key = "referrer";
+            if (value && value !== "" && value !== undefined && value.indexOf(document.location.host) === -1) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+
+        /**
          * Create/write cookies when needed.
          */
         storeParamsInCookies: function () {
@@ -209,5 +222,40 @@
      * *** Application Logic - Meat & Potatoes
      * ***
      */
+
+    // Detect and update UTM tracking codes
     base.storeParamsInCookies();
+
+    // Referrer override - Yes referer (except when referer !== current domain) & No UTM in URL = Delete all
+    // non-referrer UTM cookie values
+    if (base.isReferrer() && base.utmPresentInUrl()) {
+        if (document.referrer.replace(/(^\w+:|^)\/\//, '') !== 'www'+window.location.hostname) {
+            settings.utmParams.forEach(function(param) {
+                cookies.erase(param)
+            })
+        }
+    }
+
+    // Referrer override - No referer & No UTM in URL = Update last touch referrer cookie value as "direct"
+    if (!base.isReferrer() && !base.utmPresentInUrl()) {
+        cookies.writeCookieOnce("referrer", "direct");
+    }
+
+    // Store UTM tracking codes into hidden fields when available
+    var utm_medium_elm = document.getElementsByName("utm_medium");
+    var utm_source_elm = document.getElementsByName("utm_source");
+    var utm_campaign_elm = document.getElementsByName("utm_campaign");
+    var utm_referrer_elm = document.getElementsByName("utm_referrer");
+    if (utm_medium_elm.length) {
+        utm_medium_elm[0].value = cookies.read("__lt_utm_medium");
+    }
+    if (utm_source_elm.length) {
+        utm_source_elm[0].value = cookies.read("__lt_utm_source");
+    }
+    if (utm_campaign_elm.length) {
+        utm_campaign_elm[0].value = cookies.read("__lt_utm_campaign");
+    }
+    if (utm_referrer_elm.length) {
+        utm_referrer_elm[0].value = cookies.read("__lt_referrer");
+    }
 })();
