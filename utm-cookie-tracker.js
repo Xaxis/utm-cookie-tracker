@@ -241,6 +241,16 @@
         cookies.writeCookieOnce("referrer", "direct");
     }
 
+    // Override prepaid - Update UTM codes in cases where source is paid
+    var url_medium = base.getParameterByName("utm_medium")
+    if (url_medium === 'cpc' || url_medium === 'psm' || url_medium === 'web') {
+        cookies.writeCookieOnce("utm_medium", url_medium);
+        cookies.writeCookieOnce("utm_source", base.getParameterByName("utm_source"));
+        cookies.writeCookieOnce("utm_campaign", base.getParameterByName("utm_campaign"));
+        cookies.writeCookieOnce("utm_term", base.getParameterByName("utm_term"));
+        cookies.writeCookieOnce("utm_content", base.getParameterByName("utm_content"));
+    }
+
     // Store UTM tracking codes into hidden fields when available
     var utm_medium_elm = document.getElementsByName("utm_medium");
     var utm_source_elm = document.getElementsByName("utm_source");
