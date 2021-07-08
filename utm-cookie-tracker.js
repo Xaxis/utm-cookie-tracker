@@ -1,9 +1,9 @@
 (function () {
 
-    // The browser supports Do Not Track!
+    // If the browser supports Do Not Track, we respect the request and disable our campaign tracking.
     if (window.doNotTrack || navigator.doNotTrack || navigator.msDoNotTrack || 'msTrackingProtectionEnabled' in window.external) {
         if (window.doNotTrack == "1" || navigator.doNotTrack == "yes" || navigator.doNotTrack == "1" || navigator.msDoNotTrack == "1" || (window.external && window.external.msTrackingProtectionEnabled)) {
-            console.log("Do not track is on");
+            console.log("Campaign tracking features have been disabled.");
             return;
         }
     }
