@@ -241,9 +241,15 @@
         cookies.writeCookieOnce("referrer", "direct");
     }
 
-    // Override prepaid - Update UTM codes in cases where source is paid
+    // Override and hold from paid mediums. Override paid mediums with newest paid medium's values.
     var url_medium = base.getParameterByName("utm_medium")
-    if (url_medium === 'cpc' || url_medium === 'psm' || url_medium === 'web') {
+    if (
+        url_medium === 'cpc' ||
+        url_medium === 'psm' ||
+        url_medium === 'web' ||
+        url_medium === 'csy' ||
+        url_medium === 'dml'
+    ) {
         cookies.writeCookieOnce("utm_medium", url_medium);
         cookies.writeCookieOnce("utm_source", base.getParameterByName("utm_source"));
         cookies.writeCookieOnce("utm_campaign", base.getParameterByName("utm_campaign"));
