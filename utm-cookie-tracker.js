@@ -257,21 +257,38 @@
         cookies.writeCookieOnce("utm_content", base.getParameterByName("utm_content"));
     }
 
-    // Store UTM tracking codes into hidden fields when available
-    var utm_medium_elm = document.getElementsByName("utm_medium");
-    var utm_source_elm = document.getElementsByName("utm_source");
-    var utm_campaign_elm = document.getElementsByName("utm_campaign");
-    var utm_referrer_elm = document.getElementsByName("utm_referrer");
-    if (utm_medium_elm.length) {
-        utm_medium_elm[0].value = cookies.read("__lt_utm_medium");
-    }
-    if (utm_source_elm.length) {
-        utm_source_elm[0].value = cookies.read("__lt_utm_source");
-    }
-    if (utm_campaign_elm.length) {
-        utm_campaign_elm[0].value = cookies.read("__lt_utm_campaign");
-    }
-    if (utm_referrer_elm.length) {
-        utm_referrer_elm[0].value = cookies.read("__lt_referrer");
-    }
+    // Update hidden field's values after they are loaded
+    setTimeout(function() {
+        if (typeof MktoForms2 != "undefined") {
+            MktoForms2.whenReady(function(form) {
+
+                // Store UTM tracking codes into hidden fields when available
+                var utm_medium_elm = document.getElementsByName("utm_medium");
+                var utm_content_elm = document.getElementsByName("utm_content");
+                var utm_term_elm = document.getElementsByName("utm_term");
+                var utm_source_elm = document.getElementsByName("utm_source");
+                var utm_campaign_elm = document.getElementsByName("utm_campaign");
+                var utm_referrer_elm = document.getElementsByName("utm_referrer");
+                if (utm_medium_elm.length) {
+                    utm_medium_elm[0].value = cookies.read("__lt_utm_medium");
+                }
+                if (utm_content_elm.length) {
+                    utm_content_elm[0].value = cookies.read("__lt_utm_content");
+                }
+                if (utm_term_elm.length) {
+                    utm_term_elm[0].value = cookies.read("__lt_utm_term");
+                }
+                if (utm_source_elm.length) {
+                    utm_source_elm[0].value = cookies.read("__lt_utm_source");
+                }
+                if (utm_campaign_elm.length) {
+                    utm_campaign_elm[0].value = cookies.read("__lt_utm_campaign");
+                }
+                if (utm_referrer_elm.length) {
+                    utm_referrer_elm[0].value = cookies.read("__lt_referrer");
+                }
+            })
+        }
+    }, 2000)
+
 })();
