@@ -248,7 +248,8 @@
         url_medium === 'psm' ||
         url_medium === 'web' ||
         url_medium === 'csy' ||
-        url_medium === 'dml'
+        url_medium === 'dml' ||
+        url_medium === 'rdk'
     ) {
         cookies.writeCookieOnce("utm_medium", url_medium);
         cookies.writeCookieOnce("utm_source", base.getParameterByName("utm_source"));
