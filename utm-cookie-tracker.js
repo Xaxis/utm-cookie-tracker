@@ -303,7 +303,6 @@
             clearInterval(intervalRunner);
         }
         intervalCount += 1;
-        console.log("Interval Task", intervalCount);
     }, 250);
 
 })();
