@@ -258,8 +258,8 @@
         cookies.writeCookieOnce("utm_content", base.getParameterByName("utm_content"));
     }
 
-    // Update hidden field's values after they are loaded
-    setTimeout(function() {
+    // Function to read values from cookies and add them to forms
+    var addValuesToMarketoFormsFromCookie = function() {
         if (typeof MktoForms2 != "undefined") {
             MktoForms2.whenReady(function(form) {
 
@@ -290,6 +290,20 @@
                 }
             })
         }
-    }, 2000)
+    }
+
+    // Attempt to set values initially on script run
+    addValuesToMarketoFormsFromCookie()
+
+    // Update hidden field's values after they are loaded
+    var intervalCount = 0
+    var intervalRunner = setInterval(function() {
+        addValuesToMarketoFormsFromCookie();
+        if (intervalCount >= 30) {
+            clearInterval(intervalRunner);
+        }
+        intervalCount += 1;
+        console.log("Interval Task", intervalCount);
+    }, 250);
 
 })();
