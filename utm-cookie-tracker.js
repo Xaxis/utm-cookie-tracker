@@ -12,7 +12,7 @@
     var settings = {
         cookieNameFirstTouchPrefix: "__ft_",
         cookieNamePrefix: "__lt_",
-        utmParams: ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"],
+        utmParams: ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "utm_adgroup"],
         cookieExpiryDays: 30,
         isFirstTouch: null
     }
@@ -256,6 +256,7 @@
         cookies.writeCookieOnce("utm_campaign", base.getParameterByName("utm_campaign"));
         cookies.writeCookieOnce("utm_term", base.getParameterByName("utm_term"));
         cookies.writeCookieOnce("utm_content", base.getParameterByName("utm_content"));
+        cookies.writeCookieOnce("utm_adgroup", base.getParameterByName("utm_adgroup"));
     }
 
     // Function to read values from cookies and add them to forms
@@ -266,6 +267,7 @@
                 // Store UTM tracking codes into hidden fields when available
                 var utm_medium_elm = document.getElementsByName("utm_medium");
                 var utm_content_elm = document.getElementsByName("utm_content");
+                var utm_adgroup_elm = document.getElementsByName("utm_adgroup");
                 var utm_term_elm = document.getElementsByName("utm_term");
                 var utm_source_elm = document.getElementsByName("utm_source");
                 var utm_campaign_elm = document.getElementsByName("utm_campaign");
@@ -275,6 +277,9 @@
                 }
                 if (utm_content_elm.length) {
                     utm_content_elm[0].value = cookies.read("__lt_utm_content");
+                }
+                if (utm_adgroup_elm.length) {
+                    utm_adgroup_elm[0].value = cookies.read("__lt_utm_adgroup");
                 }
                 if (utm_term_elm.length) {
                     utm_term_elm[0].value = cookies.read("__lt_utm_term");
