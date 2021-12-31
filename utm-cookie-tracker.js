@@ -12,7 +12,10 @@
     var settings = {
         cookieNameFirstTouchPrefix: "__ft_",
         cookieNamePrefix: "__lt_",
-        utmParams: ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "utm_adgroup"],
+        utmParams: [
+            "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "utm_adgroup",
+            "int_medium", "int_source", "int_campaign", "int_adgroup", "int_content"
+        ],
         cookieExpiryDays: 30,
         isFirstTouch: null
     }
@@ -293,6 +296,29 @@
                 if (utm_referrer_elm.length) {
                     utm_referrer_elm[0].value = cookies.read("__lt_referrer");
                 }
+
+                // Store Internal tracking codes into hidden fields when available
+                var int_medium_elm = document.getElementsByName("int_medium");
+                var int_source_elm = document.getElementsByName("int_source");
+                var int_campaign_elm = document.getElementsByName("int_campaign");
+                var int_adgroup_elm = document.getElementsByName("int_adgroup");
+                var int_content_elm = document.getElementsByName("int_content");
+                if (int_medium_elm.length) {
+                    int_medium_elm[0].value = cookies.read("__lt_int_medium");
+                }
+                if (int_source_elm.length) {
+                    int_source_elm[0].value = cookies.read("__lt_int_source");
+                }
+                if (int_campaign_elm.length) {
+                    int_campaign_elm[0].value = cookies.read("__lt_int_campaign");
+                }
+                if (int_adgroup_elm.length) {
+                    int_adgroup_elm[0].value = cookies.read("__lt_int_adgroup");
+                }
+                if (int_content_elm.length) {
+                    int_content_elm[0].value = cookies.read("__lt_int_content");
+                }
+
             })
         }
     }
