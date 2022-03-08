@@ -298,11 +298,11 @@
                 }
 
                 // Store Internal tracking codes into hidden fields when available
-                var int_medium_elm = document.getElementsByName("int_medium");
-                var int_source_elm = document.getElementsByName("int_source");
-                var int_campaign_elm = document.getElementsByName("int_campaign");
-                var int_adgroup_elm = document.getElementsByName("int_adgroup");
-                var int_content_elm = document.getElementsByName("int_content");
+                var int_medium_elm = document.getElementsByName("int_medium__c");
+                var int_source_elm = document.getElementsByName("int_source__c");
+                var int_campaign_elm = document.getElementsByName("int_campaign__c");
+                var int_adgroup_elm = document.getElementsByName("int_adgroup__c");
+                var int_content_elm = document.getElementsByName("int_content__c");
                 if (int_medium_elm.length) {
                     int_medium_elm[0].value = cookies.read("__lt_int_medium");
                 }
