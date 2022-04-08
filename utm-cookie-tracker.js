@@ -262,74 +262,145 @@
         cookies.writeCookieOnce("utm_adgroup", base.getParameterByName("utm_adgroup"));
     }
 
+    // Quick function for erasing all Internal Tracking codes
+    var eraseInternalTrackingCookies = function() {
+        cookies.writeCookieOnce("int_medium", "");
+        cookies.writeCookieOnce("int_source", "");
+        cookies.writeCookieOnce("int_campaign", "");
+        cookies.writeCookieOnce("int_content", "");
+        cookies.writeCookieOnce("int_adgroup", "");
+    };
+
+    // If an internal tracking link has a cookie value and a new url parameter value is different, erase all
+    // internal tracking cookies, resetting them with new values to avoid mismatched tracking values.
+    // Look to update internal tracking cookies every script load
+    if (base.getParameterByName("int_medium")) {
+        if (base.getParameterByName("int_medium") !== cookies.read("__lt_int_medium")) {
+            eraseInternalTrackingCookies();
+        }
+    }
+    if (base.getParameterByName("int_source")) {
+        if (base.getParameterByName("int_source") !== cookies.read("__lt_int_source")) {
+            eraseInternalTrackingCookies();
+        }
+    }
+    if (base.getParameterByName("int_campaign")) {
+        if (base.getParameterByName("int_campaign") !== cookies.read("__lt_int_campaign")) {
+            eraseInternalTrackingCookies();
+        }
+    }
+    if (base.getParameterByName("int_content")) {
+        if (base.getParameterByName("int_content") !== cookies.read("__lt_int_content")) {
+            eraseInternalTrackingCookies();
+        }
+    }
+    if (base.getParameterByName("int_adgroup")) {
+        if (base.getParameterByName("int_adgroup") !== cookies.read("__lt_int_adgroup")) {
+            eraseInternalTrackingCookies();
+        }
+    }
+
+    // Look to update internal tracking cookies every script load
+    if (base.getParameterByName("int_medium")) {
+        cookies.writeCookieOnce("int_medium", base.getParameterByName("int_medium"));
+    }
+    if (base.getParameterByName("int_source")) {
+        cookies.writeCookieOnce("int_source", base.getParameterByName("int_source"));
+    }
+    if (base.getParameterByName("int_campaign")) {
+        cookies.writeCookieOnce("int_campaign", base.getParameterByName("int_campaign"));
+    }
+    if (base.getParameterByName("int_adgroup")) {
+        cookies.writeCookieOnce("int_adgroup", base.getParameterByName("int_adgroup"));
+    }
+    if (base.getParameterByName("int_content")) {
+        cookies.writeCookieOnce("int_content", base.getParameterByName("int_content"));
+    }
+
+    // Clear out undefined value with an empty string when reading cookies
+    var cleanUndefinedValue = function(value) {
+        return value === undefined ? "" : value;
+    }
+
+    // Function that sets value in forms
+    var addValuesToFormsFromCookie = function() {
+        // Store UTM tracking codes into hidden fields when available
+        var utm_medium_elm = document.getElementsByName("utm_medium");
+        var utm_content_elm = document.getElementsByName("utm_content");
+        var utm_adgroup_elm = document.getElementsByName("utm_adgroup");
+        var utm_term_elm = document.getElementsByName("utm_term");
+        var utm_source_elm = document.getElementsByName("utm_source");
+        var utm_campaign_elm = document.getElementsByName("utm_campaign");
+        var utm_referrer_elm = document.getElementsByName("utm_referrer");
+        if (utm_medium_elm.length) {
+            utm_medium_elm[0].value = cleanUndefinedValue(cookies.read("__lt_utm_medium"));
+        }
+        if (utm_content_elm.length) {
+            utm_content_elm[0].value = cleanUndefinedValue(cookies.read("__lt_utm_content"));
+        }
+        if (utm_adgroup_elm.length) {
+            utm_adgroup_elm[0].value = cleanUndefinedValue(cookies.read("__lt_utm_adgroup"));
+        }
+        if (utm_term_elm.length) {
+            utm_term_elm[0].value = cleanUndefinedValue(cookies.read("__lt_utm_term"));
+        }
+        if (utm_source_elm.length) {
+            utm_source_elm[0].value = cleanUndefinedValue(cookies.read("__lt_utm_source"));
+        }
+        if (utm_campaign_elm.length) {
+            utm_campaign_elm[0].value = cleanUndefinedValue(cookies.read("__lt_utm_campaign"));
+        }
+        if (utm_referrer_elm.length) {
+            utm_referrer_elm[0].value = cleanUndefinedValue(cookies.read("__lt_referrer"));
+        }
+
+        // Store Internal tracking codes into hidden fields when available
+        var int_medium_elm = document.getElementsByName("int_medium__c");
+        var int_source_elm = document.getElementsByName("int_source__c");
+        var int_campaign_elm = document.getElementsByName("int_campaign__c");
+        var int_adgroup_elm = document.getElementsByName("int_adgroup__c");
+        var int_content_elm = document.getElementsByName("int_content__c");
+        if (int_medium_elm.length) {
+            int_medium_elm[0].value = cleanUndefinedValue(cookies.read("__lt_int_medium"));
+        }
+        if (int_source_elm.length) {
+            int_source_elm[0].value = cleanUndefinedValue(cookies.read("__lt_int_source"));
+        }
+        if (int_campaign_elm.length) {
+            int_campaign_elm[0].value = cleanUndefinedValue(cookies.read("__lt_int_campaign"));
+        }
+        if (int_adgroup_elm.length) {
+            int_adgroup_elm[0].value = cleanUndefinedValue(cookies.read("__lt_int_adgroup"));
+        }
+        if (int_content_elm.length) {
+            int_content_elm[0].value = cleanUndefinedValue(cookies.read("__lt_int_content"));
+        }
+    }
+
     // Function to read values from cookies and add them to forms
     var addValuesToMarketoFormsFromCookie = function() {
         if (typeof MktoForms2 != "undefined") {
             MktoForms2.whenReady(function(form) {
-
-                // Store UTM tracking codes into hidden fields when available
-                var utm_medium_elm = document.getElementsByName("utm_medium");
-                var utm_content_elm = document.getElementsByName("utm_content");
-                var utm_adgroup_elm = document.getElementsByName("utm_adgroup");
-                var utm_term_elm = document.getElementsByName("utm_term");
-                var utm_source_elm = document.getElementsByName("utm_source");
-                var utm_campaign_elm = document.getElementsByName("utm_campaign");
-                var utm_referrer_elm = document.getElementsByName("utm_referrer");
-                if (utm_medium_elm.length) {
-                    utm_medium_elm[0].value = cookies.read("__lt_utm_medium");
-                }
-                if (utm_content_elm.length) {
-                    utm_content_elm[0].value = cookies.read("__lt_utm_content");
-                }
-                if (utm_adgroup_elm.length) {
-                    utm_adgroup_elm[0].value = cookies.read("__lt_utm_adgroup");
-                }
-                if (utm_term_elm.length) {
-                    utm_term_elm[0].value = cookies.read("__lt_utm_term");
-                }
-                if (utm_source_elm.length) {
-                    utm_source_elm[0].value = cookies.read("__lt_utm_source");
-                }
-                if (utm_campaign_elm.length) {
-                    utm_campaign_elm[0].value = cookies.read("__lt_utm_campaign");
-                }
-                if (utm_referrer_elm.length) {
-                    utm_referrer_elm[0].value = cookies.read("__lt_referrer");
-                }
-
-                // Store Internal tracking codes into hidden fields when available
-                var int_medium_elm = document.getElementsByName("int_medium__c");
-                var int_source_elm = document.getElementsByName("int_source__c");
-                var int_campaign_elm = document.getElementsByName("int_campaign__c");
-                var int_adgroup_elm = document.getElementsByName("int_adgroup__c");
-                var int_content_elm = document.getElementsByName("int_content__c");
-                if (int_medium_elm.length) {
-                    int_medium_elm[0].value = cookies.read("__lt_int_medium");
-                }
-                if (int_source_elm.length) {
-                    int_source_elm[0].value = cookies.read("__lt_int_source");
-                }
-                if (int_campaign_elm.length) {
-                    int_campaign_elm[0].value = cookies.read("__lt_int_campaign");
-                }
-                if (int_adgroup_elm.length) {
-                    int_adgroup_elm[0].value = cookies.read("__lt_int_adgroup");
-                }
-                if (int_content_elm.length) {
-                    int_content_elm[0].value = cookies.read("__lt_int_content");
-                }
-
+                addValuesToFormsFromCookie();
             })
         }
     }
 
     // Attempt to set values initially on script run
-    addValuesToMarketoFormsFromCookie()
+    if (document.location.host !== '127.0.0.1:8080') {
+        addValuesToMarketoFormsFromCookie() ;
+    } else {
+        addValuesToFormsFromCookie();
+    }
 
     // Update hidden field's values after they are loaded
     var intervalCount = 0
     var intervalRunner = setInterval(function() {
-        addValuesToMarketoFormsFromCookie();
+        if (document.location.host !== '127.0.0.1:8080') {
+            addValuesToMarketoFormsFromCookie() ;
+        } else {
+            addValuesToFormsFromCookie();
+        }
         if (intervalCount >= 30) {
             clearInterval(intervalRunner);
         }
